@@ -12,11 +12,14 @@ public class AuthController : ControllerBase
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IOptionsMonitor<BearerTokenOptions> _bearerTokenOptions;
+    private readonly SignInManager<ApplicationUser> _signInManager;
 
-    public AuthController(UserManager<ApplicationUser> userManager, IOptionsMonitor<BearerTokenOptions> bearerTokenOptions)
+
+    public AuthController(UserManager<ApplicationUser> userManager, IOptionsMonitor<BearerTokenOptions> bearerTokenOptions, SignInManager<ApplicationUser> signInManager)
     {
         _userManager = userManager;
         _bearerTokenOptions = bearerTokenOptions;
+        _signInManager = signInManager;
     }
 
     [HttpPost("/register")]
@@ -45,4 +48,28 @@ public class AuthController : ControllerBase
 
         return BadRequest(ModelState);
     }
+    
+    [HttpPost("/login")]
+    public async Task<IActionResult> Login(LoginViewModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: false);
+
+            if (result.Succeeded)
+            {
+                // Authentication successful, return a success response or redirect
+                return Ok(new { message = "Login successful" });
+            }
+            else
+            {
+                // Authentication failed, return an error response
+                return Unauthorized(new { message = "Invalid username or password" });
+            }
+        }
+
+        // If ModelState is not valid, return bad request with model validation errors
+        return BadRequest(ModelState);
+    }
+
 }
