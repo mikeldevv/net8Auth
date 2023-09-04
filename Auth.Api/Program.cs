@@ -13,11 +13,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddIdentityCore<ApplicationUser>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddApiEndpoints();
+    .AddDefaultTokenProviders();
 
+builder.Services.AddControllers();
 var app = builder.Build();
 
-app.MapIdentityApi<ApplicationUser>();
+app.MapControllers();
 app.Run();
 
 
