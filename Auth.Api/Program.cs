@@ -11,13 +11,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql("Server=localhost;Port=5433;Database=AuthDb;Username=postgres;Password=");
 });
 
+builder.Services.AddIdentityCore<ApplicationUser>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddApiEndpoints();
+
 var app = builder.Build();
 
 app.MapIdentityApi<ApplicationUser>();
 app.Run();
 
 
-class ApplicationUser : IdentityUser
+public class ApplicationUser : IdentityUser
 {
 }
 
