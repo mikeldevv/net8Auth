@@ -1,4 +1,3 @@
-using Auth.Api.Dto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Auth.Api.Controllers;
@@ -8,13 +7,13 @@ namespace Auth.Api.Controllers;
 public class AuthController : ControllerBase
 {
     [HttpPost("/register")]
-    public Task<IActionResult> Register(RegisterViewModel model)
+    public Task<IActionResult> Register()
     {
         throw new NotImplementedException();
     }
 
     [HttpPost("/login")]
-    public Task<IActionResult> Login(LoginViewModel model)
+    public Task<IActionResult> Login()
     {
         throw new NotImplementedException();
     }
